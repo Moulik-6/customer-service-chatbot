@@ -25,14 +25,24 @@ An intelligent customer service chatbot built with Python, Flask, and Natural La
 ```
 customer-service-chatbot/
 ├── app.py                      # Main Flask application
-├── setup_nltk.py               # NLTK data setup script
 ├── requirements.txt            # Python dependencies
+├── data/
+│   └── knowledge_base.json    # FAQ patterns and responses
+├── models/
+│   ├── model_inference.py     # AI model loader and predictor
+│   └── intent_classifier_final/  # Trained model (after training)
+├── notebooks/
+│   └── train_intent_classifier.ipynb  # Colab/Kaggle training notebook
+├── scripts/
+│   ├── generate_training_data.py      # Data preparation script
+│   └── setup_nltk.py                  # NLTK data setup
 ├── templates/
 │   └── index.html             # Chat interface HTML
 ├── static/
 │   ├── style.css              # Stylesheet
 │   └── script.js              # Frontend JavaScript
 ├── conversation_logs.json     # Logged conversations (auto-generated)
+├── AI_TRAINING_GUIDE.md       # Guide for training AI model
 └── README.md                  # This file
 ```
 

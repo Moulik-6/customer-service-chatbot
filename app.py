@@ -24,80 +24,26 @@ try:
 except LookupError:
     nltk.download('stopwords', quiet=True)
 
-# Knowledge base with FAQs and responses
-KNOWLEDGE_BASE = {
-    "greeting": {
-        "patterns": ["hello", "hi", "hey", "good morning", "good afternoon", "good evening"],
-        "responses": [
-            "Hello! How can I assist you today?",
-            "Hi there! What can I help you with?",
-            "Hey! I'm here to help. What do you need?"
-        ]
-    },
-    "product_info": {
-        "patterns": ["product", "item", "what do you sell", "what products", "catalog"],
-        "responses": [
-            "We offer a wide range of products including electronics, clothing, and home goods. What specific product are you interested in?",
-            "Our product catalog includes various categories. Could you specify which type of product you're looking for?"
-        ]
-    },
-    "pricing": {
-        "patterns": ["price", "cost", "how much", "expensive", "cheap", "rate"],
-        "responses": [
-            "Our prices vary by product. Please visit our website or specify a product for exact pricing.",
-            "Product pricing depends on the item. Can you tell me which product you're interested in?"
-        ]
-    },
-    "order_status": {
-        "patterns": ["order", "status", "tracking", "delivery", "shipment", "where is my order"],
-        "responses": [
-            "To check your order status, please provide your order ID and I'll help you track it.",
-            "I can help you track your order. Please share your order number."
-        ]
-    },
-    "support": {
-        "patterns": ["help", "support", "problem", "issue", "not working", "broken"],
-        "responses": [
-            "I'm here to help! Please describe your issue and I'll do my best to assist you.",
-            "Let me help you with that. Can you provide more details about the problem?"
-        ]
-    },
-    "hours": {
-        "patterns": ["hours", "open", "close", "timing", "schedule", "when"],
-        "responses": [
-            "Our customer service is available 24/7. How can I assist you?",
-            "We're here to help you anytime! What do you need assistance with?"
-        ]
-    },
-    "payment": {
-        "patterns": ["payment", "pay", "credit card", "debit", "paypal", "payment method"],
-        "responses": [
-            "We accept various payment methods including credit cards, debit cards, and PayPal. What payment option are you interested in?",
-            "You can pay using credit/debit cards or PayPal. Do you need help with a payment?"
-        ]
-    },
-    "return": {
-        "patterns": ["return", "refund", "exchange", "money back"],
-        "responses": [
-            "Our return policy allows returns within 30 days of purchase. Would you like to initiate a return?",
-            "You can return products within 30 days. Please provide your order details to proceed."
-        ]
-    },
-    "thanks": {
-        "patterns": ["thank", "thanks", "appreciate", "grateful"],
-        "responses": [
-            "You're welcome! Is there anything else I can help you with?",
-            "Happy to help! Let me know if you need anything else."
-        ]
-    },
-    "goodbye": {
-        "patterns": ["bye", "goodbye", "see you", "exit", "quit"],
-        "responses": [
-            "Goodbye! Have a great day!",
-            "Thank you for chatting with us. See you soon!"
-        ]
-    }
-}
+# Load knowledge base from JSON file
+KNOWLEDGE_BASE_FILE = "data/knowledge_base.json"
+KNOWLEDGE_BASE = {}
+
+def load_knowledge_base():
+    """Load the knowledge base from JSON file"""
+    global KNOWLEDGE_BASE
+    try:
+        with open(KNOWLEDGE_BASE_FILE, 'r') as f:
+            KNOWLEDGE_BASE = json.load(f)
+        print(f"Knowledge base loaded successfully with {len(KNOWLEDGE_BASE)} intents")
+    except FileNotFoundError:
+        print(f"Error: {KNOWLEDGE_BASE_FILE} not found. Please create the knowledge base file.")
+        KNOWLEDGE_BASE = {}
+    except json.JSONDecodeError as e:
+        print(f"Error parsing {KNOWLEDGE_BASE_FILE}: {e}")
+        KNOWLEDGE_BASE = {}
+
+# Load knowledge base on startup
+load_knowledge_base()
 
 # Conversation log file
 LOG_FILE = "conversation_logs.json"

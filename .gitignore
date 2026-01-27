@@ -34,3 +34,14 @@ logs/
 
 # Conversation logs (runtime data)
 conversation_logs.json
+
+# Training data (generated files)
+data/train_data.json
+data/val_data.json
+
+# Trained models (too large for git)
+models/intent_classifier_final/
+*.bin
+*.safetensors
+*.pt
+*.pth
