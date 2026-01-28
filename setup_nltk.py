@@ -15,8 +15,8 @@ def download_nltk_data():
     
     # Download required packages
     try:
-        print("Downloading punkt tokenizer...")
-        nltk.download('punkt', quiet=False)
+        print("Downloading punkt_tab tokenizer...")
+        nltk.download('punkt_tab', quiet=False)
         
         print("Downloading stopwords...")
         nltk.download('stopwords', quiet=False)
