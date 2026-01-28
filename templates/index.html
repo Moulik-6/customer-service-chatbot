@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Service Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>🤖 Customer Service Assistant</h1>
+            <p>Ask me anything about our products, services, or support!</p>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                <div class="message-content">
+                    <strong>Bot:</strong> Hello! I'm your virtual assistant. How can I help you today?
+                </div>
+                <div class="message-time"></div>
+            </div>
+        </div>
+        
+        <div class="chat-input-container">
+            <form id="chatForm">
+                <input 
+                    type="text" 
+                    id="userInput" 
+                    placeholder="Type your message here..." 
+                    autocomplete="off"
+                    required
+                >
+                <button type="submit" id="sendButton">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
