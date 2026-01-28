@@ -1,8 +1,112 @@
-Flask==3.0.0
-nltk==3.9.1
-Werkzeug==3.0.3
+# ============================================
+# INSTALLATION NOTES
+# ============================================
+# For Kaggle: Most ML packages (torch, transformers, scikit-learn, 
+#             pandas, matplotlib) are pre-installed. You only need to 
+#             install: datasets, accelerate, evaluate
+#             Run in Kaggle cell: !pip install datasets accelerate evaluate
+#
+# For Local Windows Installation:
+#             1. First upgrade pip: python -m pip install --upgrade pip
+#             2. Install with binary wheels: pip install -r requirements.txt --prefer-binary
+#
+#             If you still get "Microsoft Visual C++ 14.0 required" error:
+#             Option A (Recommended): Install pre-built wheels only
+#                 pip install -r requirements.txt --only-binary :all:
+#             Option B: Install Microsoft C++ Build Tools from:
+#                 https://visualstudio.microsoft.com/visual-cpp-build-tools/
+#
+# For Production/Flask App: Install core packages only (Flask through scikit-learn)
+# ============================================
 
-# Machine Learning (for AI chatbot)
-transformers==4.36.2
-torch==2.1.2
-scikit-learn==1.4.0
+# ============================================
+# Core Web Framework
+# ============================================
+Flask>=3.0.0
+Werkzeug>=3.0.0
+Jinja2>=3.1.2
+MarkupSafe>=2.1.3
+itsdangerous>=2.1.2
+click>=8.1.7
+
+# ============================================
+# Natural Language Processing
+# ============================================
+nltk>=3.8.0
+regex>=2023.12.25  # Required by NLTK
+
+# ============================================
+# Machine Learning & Deep Learning
+# ============================================
+transformers>=4.36.0
+torch>=2.1.0
+scikit-learn>=1.3.0
+
+# Transformers dependencies
+huggingface-hub>=0.19.4
+tokenizers>=0.15.0
+safetensors>=0.4.1
+filelock>=3.13.1
+pyyaml>=6.0.1
+tqdm>=4.66.1
+requests>=2.31.0
+# ============================================
+# NOTE: Install these in Kaggle with: !pip install datasets accelerate evaluate install separately)
+numpy>=1.24.3,<2.0.0
+typing-extensions>=4.8.0
+sympy>=1.12
+networkx>=3.2
+fsspec>=2023.10.0
+
+# Scikit-learn dependencies
+scipy>=1.11.4
+joblib>=1.3.2
+threadpoolctl>=3.2.0
+
+# ============================================
+# Training & Evaluation (for notebooks)
+# ============================================
+datasets>=2.16.1  # HuggingFace datasets for training
+accelerate>=0.25.0  # For distributed training and optimization
+evaluate>=0.4.1  # For model evaluation metrics
+
+# ============================================
+# Data Processing & Utilities
+# ============================================
+pandas>=2.1.4  # For data manipulation
+matplotlib>=3.8.2  # For visualization
+seaborn>=0.13.0  # For enhanced visualization
+
+# ============================================
+# Build Tools & Development
+# ============================================
+# These are needed for compiling some dependencies
+setuptools>=69.0.3
+wheel>=0.42.0
+pip>=23.3.2
+
+# ============================================
+# Optional: Jupyter for running notebooks locally
+# ============================================
+# Uncomment if you want to run notebooks locally
+# jupyter>=1.0.0
+# ipython>=8.18.1
+# notebook>=7.0.6
+# ipykernel>=6.27.1
+# ipywidgets>=8.1.1
+
+# ============================================
+# Production Server (Optional)
+# ============================================
+# For production deployment, uncomment:
+# gunicorn>=21.2.0  # WSGI server for production
+# gevent>=23.9.1  # Async worker for Gunicorn
+
+# ============================================
+# Testing & Quality (Optional)
+# ============================================
+# For testing and code quality, uncomment:
+# pytest>=7.4.3
+# pytest-cov>=4.1.0
+# flake8>=7.0.0
+# black>=23.12.1
