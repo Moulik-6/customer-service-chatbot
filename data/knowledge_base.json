@@ -1,6 +1,10 @@
 {
   "greeting": {
-    "patterns": ["hello", "hi", "hey", "good morning", "good afternoon", "good evening"],
+    "patterns": [
+      "hello", "hi", "hey", "good morning", "good afternoon", "good evening",
+      "hi there", "hello there", "greetings", "howdy", "what's up", "sup",
+      "hey there", "good day", "hi bot", "hello bot"
+    ],
     "responses": [
       "Hello! How can I assist you today?",
       "Hi there! What can I help you with?",
@@ -8,28 +12,48 @@
     ]
   },
   "product_info": {
-    "patterns": ["product", "item", "what do you sell", "what products", "catalog"],
+    "patterns": [
+      "product", "item", "what do you sell", "what products", "catalog",
+      "show me products", "what items do you have", "product list",
+      "what's available", "what can I buy", "inventory", "merchandise",
+      "tell me about your products", "what do you offer"
+    ],
     "responses": [
       "We offer a wide range of products including electronics, clothing, and home goods. What specific product are you interested in?",
       "Our product catalog includes various categories. Could you specify which type of product you're looking for?"
     ]
   },
   "pricing": {
-    "patterns": ["price", "cost", "how much", "expensive", "cheap", "rate"],
+    "patterns": [
+      "price", "cost", "how much", "expensive", "cheap", "rate",
+      "what's the price", "how much does it cost", "pricing",
+      "is it expensive", "affordable", "budget", "price range",
+      "what does it cost", "how much money", "price list"
+    ],
     "responses": [
       "Our prices vary by product. Please visit our website or specify a product for exact pricing.",
       "Product pricing depends on the item. Can you tell me which product you're interested in?"
     ]
   },
   "order_status": {
-    "patterns": ["order", "status", "tracking", "delivery", "shipment", "where is my order"],
+    "patterns": [
+      "order", "status", "tracking", "delivery", "shipment", "where is my order",
+      "track my order", "order tracking", "package location", "shipping status",
+      "when will my order arrive", "delivery status", "my package",
+      "hasn't arrived", "order update", "tracking number", "where's my package"
+    ],
     "responses": [
       "To check your order status, please provide your order ID and I'll help you track it.",
       "I can help you track your order. Please share your order number."
     ]
   },
   "support": {
-    "patterns": ["help", "support", "problem", "issue", "not working", "broken"],
+    "patterns": [
+      "help", "support", "problem", "issue", "not working", "broken",
+      "need help", "assistance", "trouble", "error", "can't",
+      "doesn't work", "having issues", "something wrong", "need support",
+      "technical support", "customer service"
+    ],
     "responses": [
       "I'm here to help! Please describe your issue and I'll do my best to assist you.",
       "Let me help you with that. Can you provide more details about the problem?"
@@ -43,28 +67,45 @@
     ]
   },
   "payment": {
-    "patterns": ["payment", "pay", "credit card", "debit", "paypal", "payment method"],
+    "patterns": [
+      "payment", "pay", "credit card", "debit", "paypal", "payment method",
+      "how to pay", "payment options", "accept credit card", "can I use paypal",
+      "payment plans", "pay with card", "billing", "checkout"
+    ],
     "responses": [
       "We accept various payment methods including credit cards, debit cards, and PayPal. What payment option are you interested in?",
       "You can pay using credit/debit cards or PayPal. Do you need help with a payment?"
     ]
   },
   "return": {
-    "patterns": ["return", "refund", "exchange", "money back"],
+    "patterns": [
+      "return", "refund", "exchange", "money back",
+      "return policy", "want to return", "send it back", "get refund",
+      "return item", "how to return", "exchange product", "refund policy",
+      "return process", "not satisfied"
+    ],
     "responses": [
       "Our return policy allows returns within 30 days of purchase. Would you like to initiate a return?",
       "You can return products within 30 days. Please provide your order details to proceed."
     ]
   },
   "thanks": {
-    "patterns": ["thank", "thanks", "appreciate", "grateful"],
+    "patterns": [
+      "thank", "thanks", "appreciate", "grateful",
+      "thank you", "thanks a lot", "appreciate it", "thank you so much",
+      "thanks for help", "much appreciated", "cheers"
+    ],
     "responses": [
       "You're welcome! Is there anything else I can help you with?",
       "Happy to help! Let me know if you need anything else."
     ]
   },
   "goodbye": {
-    "patterns": ["bye", "goodbye", "see you", "exit", "quit"],
+    "patterns": [
+      "bye", "goodbye", "see you", "exit", "quit",
+      "bye bye", "talk later", "see you later", "gotta go",
+      "have to go", "farewell", "take care"
+    ],
     "responses": [
       "Goodbye! Have a great day!",
       "Thank you for chatting with us. See you soon!"

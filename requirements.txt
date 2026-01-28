@@ -1,25 +1,4 @@
 # ============================================
-# INSTALLATION NOTES
-# ============================================
-# For Kaggle: Most ML packages (torch, transformers, scikit-learn, 
-#             pandas, matplotlib) are pre-installed. You only need to 
-#             install: datasets, accelerate, evaluate
-#             Run in Kaggle cell: !pip install datasets accelerate evaluate
-#
-# For Local Windows Installation:
-#             1. First upgrade pip: python -m pip install --upgrade pip
-#             2. Install with binary wheels: pip install -r requirements.txt --prefer-binary
-#
-#             If you still get "Microsoft Visual C++ 14.0 required" error:
-#             Option A (Recommended): Install pre-built wheels only
-#                 pip install -r requirements.txt --only-binary :all:
-#             Option B: Install Microsoft C++ Build Tools from:
-#                 https://visualstudio.microsoft.com/visual-cpp-build-tools/
-#
-# For Production/Flask App: Install core packages only (Flask through scikit-learn)
-# ============================================
-
-# ============================================
 # Core Web Framework
 # ============================================
 Flask>=3.0.0
@@ -50,16 +29,16 @@ filelock>=3.13.1
 pyyaml>=6.0.1
 tqdm>=4.66.1
 requests>=2.31.0
-# ============================================
-# NOTE: Install these in Kaggle with: !pip install datasets accelerate evaluate install separately)
-numpy>=1.24.3,<2.0.0
+# PyTorch dependencies
+# NOTE: Use newer versions with pre-built wheels for Python 3.14
+numpy>=1.26.0
 typing-extensions>=4.8.0
 sympy>=1.12
 networkx>=3.2
 fsspec>=2023.10.0
 
 # Scikit-learn dependencies
-scipy>=1.11.4
+scipy>=1.11.0
 joblib>=1.3.2
 threadpoolctl>=3.2.0
 
@@ -85,28 +64,3 @@ setuptools>=69.0.3
 wheel>=0.42.0
 pip>=23.3.2
 
-# ============================================
-# Optional: Jupyter for running notebooks locally
-# ============================================
-# Uncomment if you want to run notebooks locally
-# jupyter>=1.0.0
-# ipython>=8.18.1
-# notebook>=7.0.6
-# ipykernel>=6.27.1
-# ipywidgets>=8.1.1
-
-# ============================================
-# Production Server (Optional)
-# ============================================
-# For production deployment, uncomment:
-# gunicorn>=21.2.0  # WSGI server for production
-# gevent>=23.9.1  # Async worker for Gunicorn
-
-# ============================================
-# Testing & Quality (Optional)
-# ============================================
-# For testing and code quality, uncomment:
-# pytest>=7.4.3
-# pytest-cov>=4.1.0
-# flake8>=7.0.0
-# black>=23.12.1

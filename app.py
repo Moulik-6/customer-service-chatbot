@@ -1,6 +1,6 @@
 """
 Automated Customer Service Chatbot - Main Application
-A Flask-based chatbot using NLTK for natural language processing
+A Flask-based chatbot using AI (DistilBERT) and NLTK for natural language processing
 """
 
 from flask import Flask, request, jsonify, render_template
@@ -10,6 +10,14 @@ from nltk.corpus import stopwords
 from datetime import datetime
 import json
 import os
+
+# Import AI model
+try:
+    from models.model_inference import get_intent_classifier
+    AI_MODEL_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️ Could not import AI model: {e}")
+    AI_MODEL_AVAILABLE = False
 
 app = Flask(__name__)
 
@@ -45,6 +53,24 @@ def load_knowledge_base():
 # Load knowledge base on startup
 load_knowledge_base()
 
+# Initialize AI model
+ai_classifier = None
+if AI_MODEL_AVAILABLE:
+    try:
+        print("🤖 Initializing AI intent classifier...")
+        ai_classifier = get_intent_classifier()
+        if ai_classifier.is_loaded():
+            print("✅ AI model loaded successfully - using DistilBERT for intent detection")
+        else:
+            print("⚠️ AI model not loaded - falling back to NLTK keyword matching")
+            ai_classifier = None
+    except Exception as e:
+        print(f"⚠️ Error loading AI model: {e}")
+        print("📝 Falling back to NLTK keyword matching")
+        ai_classifier = None
+else:
+    print("📝 AI model not available - using NLTK keyword matching")
+
 # Conversation log file
 LOG_FILE = "conversation_logs.json"
 
@@ -64,8 +90,8 @@ def preprocess_text(text):
     return tokens
 
 
-def detect_intent(user_message):
-    """Detect the intent of the user's message"""
+def detect_intent_nltk(user_message):
+    """Detect intent using NLTK keyword matching (fallback method)"""
     tokens = preprocess_text(user_message)
     
     # Track intent scores
@@ -89,6 +115,25 @@ def detect_intent(user_message):
         return best_intent
     
     return "unknown"
+
+
+def detect_intent(user_message):
+    """Detect the intent of the user's message using AI model or NLTK fallback"""
+    # Try AI model first
+    if ai_classifier is not None:
+        try:
+            intent, confidence = ai_classifier.predict(user_message, return_confidence=True)
+            # If confidence is too low, fall back to NLTK
+            if confidence < 0.3:
+                print(f"⚠️ Low confidence ({confidence:.2f}) for AI prediction, trying NLTK fallback")
+                return detect_intent_nltk(user_message)
+            return intent
+        except Exception as e:
+            print(f"⚠️ Error using AI model: {e}, falling back to NLTK")
+            return detect_intent_nltk(user_message)
+    
+    # Fallback to NLTK
+    return detect_intent_nltk(user_message)
 
 
 def get_response(intent):
@@ -151,16 +196,30 @@ def chat():
         # Detect intent
         intent = detect_intent(user_message)
         
+        # Get confidence if using AI model
+        confidence = None
+        if ai_classifier is not None:
+            try:
+                _, confidence = ai_classifier.predict(user_message, return_confidence=True)
+            except:
+                pass
+        
         # Get response
         response = get_response(intent)
         
         # Log conversation
         log_conversation(user_message, response, intent)
         
-        return jsonify({
+        result = {
             'response': response,
             'intent': intent
-        })
+        }
+        
+        # Include confidence if available
+        if confidence is not None:
+            result['confidence'] = f"{confidence:.2%}"
+        
+        return jsonify(result)
     
     except Exception as e:
         # Log the error for debugging but don't expose details to client

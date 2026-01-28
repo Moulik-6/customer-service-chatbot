@@ -17,8 +17,10 @@ An intelligent customer service chatbot built with Python, Flask, and Natural La
 
 - **Backend**: Python 3.x, Flask
 - **NLP**: NLTK (Natural Language Toolkit)
+- **AI/ML**: Transformers (DistilBERT), PyTorch, scikit-learn
 - **Frontend**: HTML5, CSS3, JavaScript
-- **Data Storage**: JSON (for conversation logs)
+- **Data Storage**: JSON (for conversation logs and knowledge base)
+- **Training Platform**: Kaggle/Google Colab (for model training)
 
 ## Project Structure
 
@@ -73,21 +75,34 @@ customer-service-chatbot/
    ```
 
 3. **Install dependencies**:
+   
+   **For Windows** (use pre-built wheels to avoid build errors):
+   ```bash
+   python -m pip install --upgrade pip
+   pip install -r requirements.txt --only-binary :all:
+   ```
+   
+   **For macOS/Linux**:
    ```bash
    pip install -r requirements.txt
    ```
 
 4. **Download NLTK data** (required for first-time setup):
    ```bash
-   python setup_nltk.py
+   python scripts/setup_nltk.py
    ```
 
-5. **Run the application**:
+5. **Verify the trained model** (optional - model is already included):
+   - The trained DistilBERT model should be in `models/intent_classifier_final/`
+   - It includes: `model.safetensors`, `config.json`, `tokenizer.json`, `label_mappings.json`
+   - If missing, train it using the Kaggle notebook (see AI_TRAINING_GUIDE.md)
+
+6. **Run the application**:
    ```bash
    python app.py
    ```
 
-6. **Access the chatbot**:
+7. **Access the chatbot**:
    Open your web browser and navigate to:
    ```
    http://localhost:5000
@@ -112,10 +127,14 @@ The chatbot can respond to various types of queries:
 
 1. **User Input**: Customer types a question in the chat interface
 2. **NLP Processing**: Message is tokenized and processed using NLTK
-3. **Intent Detection**: The system identifies the user's intent by matching keywords
+3. **Intent Detection**: 
+   - **NLTK-based**: Simple keyword matching for basic intent detection
+   - **AI-powered** (optional): Fine-tuned DistilBERT transformer model for advanced classification
 4. **Response Generation**: Appropriate response is selected from the knowledge base
 5. **Logging**: Conversation is logged with timestamp and detected intent
 6. **Display**: Response is shown in the chat interface
+
+**Note**: The chatbot currently uses NLTK-based intent detection. To use the AI model, see `models/model_inference.py` for integration.
 
 ## Customization
 
@@ -159,7 +178,8 @@ python app.py
 
 ## Future Enhancements
 
-- [ ] Machine Learning-based intent classification
+- [x] Machine Learning-based intent classification (DistilBERT trained model available)
+- [ ] Integrate transformer model into main app.py
 - [ ] Multi-language support
 - [ ] Integration with databases for dynamic product information
 - [ ] User authentication and session management

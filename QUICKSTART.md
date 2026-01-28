@@ -3,21 +3,33 @@
 ## Installation
 
 1. **Install Python dependencies:**
+   
+   **For Windows** (recommended to avoid build errors):
+   ```bash
+   python -m pip install --upgrade pip
+   pip install -r requirements.txt --only-binary :all:
+   ```
+   
+   **For macOS/Linux**:
    ```bash
    pip install -r requirements.txt
    ```
 
 2. **Download NLTK data (first time only):**
    ```bash
-   python setup_nltk.py
+   python scripts/setup_nltk.py
    ```
 
-3. **Run the chatbot:**
+3. **Verify AI model is present** (should already be included):
+   - Check that `models/intent_classifier_final/` contains the trained model files
+   - If missing, see `AI_TRAINING_GUIDE.md` for training instructions
+
+4. **Run the chatbot:**
    ```bash
    python app.py
    ```
 
-4. **Open your browser:**
+5. **Open your browser:**
    Navigate to `http://localhost:5000`
 
 ## Testing the Chatbot
@@ -112,13 +124,36 @@ Response:
 ## Troubleshooting
 
 **Issue: NLTK data not found**
-- Solution: Run `python setup_nltk.py`
+- Solution: Run `python scripts/setup_nltk.py`
 
 **Issue: Port 5000 already in use**
-- Solution: Change port with `export FLASK_PORT=8080`
+- Solution: Change port with environment variable:
+  ```bash
+  # Windows PowerShell
+  $env:FLASK_PORT="8080"
+  python app.py
+  
+  # Linux/macOS
+  export FLASK_PORT=8080
+  python app.py
+  ```
 
 **Issue: Module not found**
 - Solution: Install dependencies with `pip install -r requirements.txt`
+
+**Issue: "Microsoft Visual C++ 14.0 required" (Windows)**
+- Solution: Use binary wheels:
+  ```bash
+  pip install -r requirements.txt --only-binary :all:
+  ```
+
+**Issue: Model not found error**
+- Solution: Ensure `models/intent_classifier_final/` folder contains all model files
+- Check that these files exist:
+  - `model.safetensors`
+  - `config.json`
+  - `tokenizer.json`
+  - `label_mappings.json`
 
 ## Adding New Intents
 
@@ -136,12 +171,18 @@ Edit `app.py` and add to the `KNOWLEDGE_BASE` dictionary:
 
 ## Project Files
 
-- `app.py` - Main Flask application with NLP logic
-- `setup_nltk.py` - NLTK data downloader
+- `app.py` - Main Flask application with NLTK-based NLP logic
+- `models/model_inference.py` - AI model loader and predictor (DistilBERT)
+- `models/intent_classifier_final/` - Trained transformer model files
+- `scripts/setup_nltk.py` - NLTK data downloader
+- `scripts/generate_training_data.py` - Training data generator
+- `notebooks/train_intent_classifier.ipynb` - Kaggle/Colab training notebook
+- `data/knowledge_base.json` - Intent patterns and responses
 - `templates/index.html` - Chat interface
 - `static/style.css` - Styling and animations
 - `static/script.js` - Frontend chat logic
 - `conversation_logs.json` - Auto-generated conversation history
+- `AI_TRAINING_GUIDE.md` - Complete guide for training the AI model
 
 ## Features
 
