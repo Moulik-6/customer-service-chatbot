@@ -4,6 +4,53 @@ const userInput = document.getElementById('userInput');
 const chatMessages = document.getElementById('chatMessages');
 const sendButton = document.getElementById('sendButton');
 
+// Generate unique session ID
+const sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
+// Handle form submission
+chatForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const message = userInput.value.trim();
+    if (!message) return;
+    
+    // Add user message to chat
+    addMessage(message, 'user');
+    
+    // Clear input
+    userInput.value = '';
+    
+    // Disable send button while processing
+    sendButton.disabled = true;
+    
+    // Show typing indicator
+    const typingIndicator = addTypingIndicator();
+    
+    try {
+        // Send message to backend with session ID
+        const response = await fetch('/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                message: message,
+                session_id: sessionId
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        const data = await response.json();
+        
+        // Remove typing indicator
+        typingIndicator.remove();
+        
+        // Add bot response to chat with typing animation
+        await addMessageWithTyping(data.response, 'bot');
+
 // Handle form submission
 chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -72,7 +119,9 @@ function addMessage(text, sender) {
     
     const messageContent = document.createElement('div');
     messageContent.className = 'message-content';
-    messageContent.innerHTML = `<strong>${sender === 'user' ? 'You' : 'Bot'}:</strong> ${escapeHtml(text)}`;
+    // Convert newlines to <br> tags for better formatting
+    const formattedText = escapeHtml(text).replace(/\n/g, '<br>');
+    messageContent.innerHTML = `<strong>${sender === 'user' ? 'You' : 'Bot'}:</strong> ${formattedText}`;
     
     const messageTime = document.createElement('div');
     messageTime.className = 'message-time';
@@ -84,6 +133,33 @@ function addMessage(text, sender) {
     
     // Scroll to bottom
     chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Function to add message with typing animation
+async function addMessageWithTyping(text, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}-message`;
+    
+    const messageContent = document.createElement('div');
+    messageContent.className = 'message-content';
+    messageContent.innerHTML = `<strong>${sender === 'user' ? 'You' : 'Bot'}:</strong> `;
+    
+    const messageTime = document.createElement('div');
+    messageTime.className = 'message-time';
+    messageTime.textContent = getCurrentTime();
+    
+    messageDiv.appendChild(messageContent);
+    messageDiv.appendChild(messageTime);
+    chatMessages.appendChild(messageDiv);
+    
+    // Type out the message character by character
+    const formattedText = text.replace(/\n/g, '<br>');
+    const words = formattedText.split(' ');
+    for (let i = 0; i < words.length; i++) {
+        messageContent.innerHTML += words[i] + ' ';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        await new Promise(resolve => setTimeout(resolve, 30)); // Typing speed
+    }
 }
 
 // Function to add typing indicator

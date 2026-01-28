@@ -3,13 +3,15 @@ Automated Customer Service Chatbot - Main Application
 A Flask-based chatbot using AI (DistilBERT) and NLTK for natural language processing
 """
 
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, session
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from datetime import datetime
 import json
 import os
+import random
+from collections import defaultdict
 
 # Import AI model
 try:
@@ -20,6 +22,10 @@ except ImportError as e:
     AI_MODEL_AVAILABLE = False
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)  # For session management
+
+# Conversation history (in-memory for simplicity)
+conversation_history = defaultdict(list)  # session_id -> list of messages
 
 # Download required NLTK data
 try:
@@ -136,15 +142,70 @@ def detect_intent(user_message):
     return detect_intent_nltk(user_message)
 
 
-def get_response(intent):
-    """Get a response based on the detected intent"""
+def get_follow_up_suggestions(intent, history=None):
+    """Get relevant follow-up questions based on intent"""
+    suggestions = {
+        'product_info': [
+            "Would you like to know about pricing?",
+            "Can I help you place an order?",
+            "Interested in seeing specific categories?"
+        ],
+        'pricing': [
+            "Would you like to see our product catalog?",
+            "Are you ready to place an order?",
+            "Need help finding something in your budget?"
+        ],
+        'order_status': [
+            "Need help with anything else regarding your order?",
+            "Would you like to know about our return policy?",
+            "Want to modify your order?"
+        ],
+        'support': [
+            "Is there anything specific I can help you troubleshoot?",
+            "Would you like me to connect you with a specialist?",
+            "Need more detailed assistance?"
+        ],
+        'return': [
+            "Would you like to know the return process?",
+            "Do you need help with tracking your return?",
+            "Questions about refund timing?"
+        ],
+        'greeting': [
+            "What can I help you with today?",
+            "Looking for product information or order status?"
+        ]
+    }
+    return suggestions.get(intent, [])
+
+
+def get_response(intent, user_message="", history=None):
+    """Get a contextual response for the detected intent"""
     import random
     
-    if intent in KNOWLEDGE_BASE:
-        # Randomly select a response to make conversations more natural
-        return random.choice(KNOWLEDGE_BASE[intent]["responses"])
-    else:
-        return "I'm sorry, I didn't understand that. Could you please rephrase your question?"
+    if intent not in KNOWLEDGE_BASE:
+        return "I'm not sure how to help with that. Could you please rephrase your question?"
+    
+    # Get base response
+    base_response = random.choice(KNOWLEDGE_BASE[intent]['responses'])
+    
+    # Add context-aware enhancements
+    if history and len(history) > 1:
+        # Check if user is repeating similar questions
+        recent_intents = [msg.get('intent') for msg in history[-3:]]
+        if recent_intents.count(intent) > 1:
+            prefixes = [
+                "As I mentioned, ",
+                "Just to clarify again, ",
+                "To reiterate, "
+            ]
+            base_response = random.choice(prefixes) + base_response.lower()
+    
+    # Add follow-up suggestions
+    follow_ups = get_follow_up_suggestions(intent, history)
+    if follow_ups and len(history) < 5:  # Don't spam with suggestions
+        base_response += "\\n\\n" + random.choice(follow_ups)
+    
+    return base_response
 
 
 def log_conversation(user_message, bot_response, intent):
@@ -185,6 +246,7 @@ def chat():
     try:
         data = request.get_json()
         user_message = data.get('message', '')
+        session_id = data.get('session_id', 'default')
         
         if not user_message:
             return jsonify({'error': 'No message provided'}), 400
@@ -192,6 +254,9 @@ def chat():
         # Validate message length (max 500 characters)
         if len(user_message) > 500:
             return jsonify({'error': 'Message too long. Maximum 500 characters allowed.'}), 400
+        
+        # Get conversation history for this session
+        history = conversation_history[session_id]
         
         # Detect intent
         intent = detect_intent(user_message)
@@ -204,8 +269,20 @@ def chat():
             except:
                 pass
         
-        # Get response
-        response = get_response(intent)
+        # Get contextual response
+        response = get_response(intent, user_message, history)
+        
+        # Update conversation history
+        history.append({
+            'user': user_message,
+            'bot': response,
+            'intent': intent,
+            'timestamp': datetime.now().isoformat()
+        })
+        
+        # Keep only last 10 messages
+        if len(history) > 10:
+            history.pop(0)
         
         # Log conversation
         log_conversation(user_message, response, intent)

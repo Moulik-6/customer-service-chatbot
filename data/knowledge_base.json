@@ -6,9 +6,10 @@
       "hey there", "good day", "hi bot", "hello bot"
     ],
     "responses": [
-      "Hello! How can I assist you today?",
-      "Hi there! What can I help you with?",
-      "Hey! I'm here to help. What do you need?"
+      "Hello! Great to hear from you. How can I assist you today?",
+      "Hi there! I'm here and ready to help. What can I do for you?",
+      "Hey! Thanks for reaching out. What brings you here today?",
+      "Good to see you! How may I help you today?"
     ]
   },
   "product_info": {
@@ -19,8 +20,9 @@
       "tell me about your products", "what do you offer"
     ],
     "responses": [
-      "We offer a wide range of products including electronics, clothing, and home goods. What specific product are you interested in?",
-      "Our product catalog includes various categories. Could you specify which type of product you're looking for?"
+      "Great question! We offer a wide range of products including electronics, clothing, and home goods. What catches your interest?",
+      "We've got quite the selection! Electronics, fashion, home essentials - you name it. What are you shopping for today?",
+      "I'd love to help you find the perfect product! We have electronics, apparel, and home items. Which category interests you most?"
     ]
   },
   "pricing": {
@@ -55,8 +57,10 @@
       "technical support", "customer service"
     ],
     "responses": [
-      "I'm here to help! Please describe your issue and I'll do my best to assist you.",
-      "Let me help you with that. Can you provide more details about the problem?"
+      "I'm sorry to hear you're having trouble! I'm here to help. Can you tell me more about what's happening?",
+      "Let's get this sorted out for you. Could you describe the issue in a bit more detail?",
+      "No worries, we'll figure this out together! What seems to be the problem?",
+      "I'm here to assist! Please share what's going on and I'll do my best to help."
     ]
   },
   "hours": {
@@ -96,8 +100,10 @@
       "thanks for help", "much appreciated", "cheers"
     ],
     "responses": [
-      "You're welcome! Is there anything else I can help you with?",
-      "Happy to help! Let me know if you need anything else."
+      "You're very welcome! Happy to help. Is there anything else you'd like to know?",
+      "My pleasure! I'm here if you need anything else.",
+      "Glad I could help! Feel free to ask if you have more questions.",
+      "Anytime! Don't hesitate to reach out if you need more assistance."
     ]
   },
   "goodbye": {
