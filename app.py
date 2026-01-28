@@ -147,9 +147,11 @@ def detect_intent(user_message):
 
 def get_response(intent):
     """Get a response based on the detected intent"""
+    import random
+    
     if intent in KNOWLEDGE_BASE:
-        # Return the first response from the list
-        return KNOWLEDGE_BASE[intent]["responses"][0]
+        # Randomly select a response to make conversations more natural
+        return random.choice(KNOWLEDGE_BASE[intent]["responses"])
     else:
         return "I'm sorry, I didn't understand that. Could you please rephrase your question?"
 
@@ -169,7 +171,7 @@ def log_conversation(user_message, bot_response, intent):
         try:
             with open(LOG_FILE, 'r') as f:
                 logs = json.load(f)
-        except:
+        except json.JSONDecodeError:
             logs = []
     
     # Append new log
@@ -196,6 +198,10 @@ def chat():
         if not user_message:
             return jsonify({'error': 'No message provided'}), 400
         
+        # Validate message length (max 500 characters)
+        if len(user_message) > 500:
+            return jsonify({'error': 'Message too long. Maximum 500 characters allowed.'}), 400
+        
         # Detect intent
         intent = detect_intent(user_message)
         
@@ -211,7 +217,9 @@ def chat():
         })
     
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        # Log the error for debugging but don't expose details to client
+        print(f"Error processing chat request: {str(e)}")
+        return jsonify({'error': 'An error occurred processing your message. Please try again.'}), 500
 
 
 @app.route('/health')
@@ -227,4 +235,10 @@ if __name__ == '__main__':
     
     print("Starting Customer Service Chatbot...")
     print("Visit http://localhost:5000 to use the chatbot")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    
+    # Use environment variables for configuration
+    debug_mode = os.getenv('FLASK_DEBUG', 'True').lower() == 'true'
+    host = os.getenv('FLASK_HOST', '127.0.0.1')
+    port = int(os.getenv('FLASK_PORT', '5000'))
+    
+    app.run(debug=debug_mode, host=host, port=port)

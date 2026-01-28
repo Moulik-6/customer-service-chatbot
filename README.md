@@ -25,6 +25,7 @@ An intelligent customer service chatbot built with Python, Flask, and Natural La
 ```
 customer-service-chatbot/
 ├── app.py                      # Main Flask application
+├── setup_nltk.py               # NLTK data setup script
 ├── requirements.txt            # Python dependencies
 ├── templates/
 │   └── index.html             # Chat interface HTML
@@ -66,12 +67,17 @@ customer-service-chatbot/
    pip install -r requirements.txt
    ```
 
-4. **Run the application**:
+4. **Download NLTK data** (required for first-time setup):
+   ```bash
+   python setup_nltk.py
+   ```
+
+5. **Run the application**:
    ```bash
    python app.py
    ```
 
-5. **Access the chatbot**:
+6. **Access the chatbot**:
    Open your web browser and navigate to:
    ```
    http://localhost:5000
@@ -124,6 +130,22 @@ KNOWLEDGE_BASE = {
 - **Colors/Styling**: Edit `static/style.css`
 - **Layout**: Modify `templates/index.html`
 - **Behavior**: Update `static/script.js`
+
+### Configuration
+
+The application can be configured using environment variables:
+
+- `FLASK_DEBUG`: Set to 'False' for production (default: 'True')
+- `FLASK_HOST`: Host to bind to (default: '127.0.0.1')
+- `FLASK_PORT`: Port to run on (default: '5000')
+
+Example:
+```bash
+export FLASK_DEBUG=False
+export FLASK_HOST=0.0.0.0
+export FLASK_PORT=8080
+python app.py
+```
 
 ## Future Enhancements
 

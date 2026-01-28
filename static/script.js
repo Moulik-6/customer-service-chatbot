@@ -48,7 +48,16 @@ chatForm.addEventListener('submit', async (e) => {
     } catch (error) {
         console.error('Error:', error);
         typingIndicator.remove();
-        addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+        
+        // Provide more specific error messages
+        let errorMessage = 'Sorry, I encountered an error. Please try again.';
+        if (!navigator.onLine) {
+            errorMessage = 'No internet connection. Please check your network and try again.';
+        } else if (error.message.includes('Network')) {
+            errorMessage = 'Unable to reach the server. Please try again later.';
+        }
+        
+        addMessage(errorMessage, 'bot');
     } finally {
         // Re-enable send button
         sendButton.disabled = false;

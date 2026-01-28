@@ -31,3 +31,6 @@ nltk_data/
 # Logs
 *.log
 logs/
+
+# Conversation logs (runtime data)
+conversation_logs.json
